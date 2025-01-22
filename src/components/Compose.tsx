@@ -1,35 +1,64 @@
-import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Input } from './ui/input'
-import { Button } from './ui/button'
-import { Send, Loader2 } from 'lucide-react'
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Send, Loader2 } from 'lucide-react';
+import axios from 'axios';
+
+interface Subscriber {
+  email: string;
+}
+
+interface Newsletter {
+  subject: string;
+  content: string;
+  id: number;
+  date: string;
+  recipientCount: number;
+}
 
 interface ComposeNewsletterProps {
-  onSend: (newsletter: { subject: string; content: string; id: number; date: string; recipientCount: number }) => Promise<void>;
-  subscribers: { email: string }[];
+  onSend: (newsletter: Newsletter) => Promise<void>;
+  subscribers: Subscriber[];
 }
 
 const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ onSend, subscribers }) => {
   const [newsletter, setNewsletter] = useState({
     subject: '',
     content: '',
-  })
-  const [sending, setSending] = useState(false)
+  });
+  const [sending, setSending] = useState(false);
 
   const handleSend = async () => {
-    setSending(true)
+    if (!newsletter.subject || !newsletter.content) return;
+
+    setSending(true);
     try {
+      // API call to save newsletter to the backend
+      const response = await axios.post('https://newsletter-api-xi.vercel.app//newsletter/create', {
+        title: newsletter.subject,
+        content: newsletter.content,
+      });
+
+      const savedNewsletter = response.data;
+
+      // Notify parent component about the new newsletter
       await onSend({
-        ...newsletter,
-        id: Date.now(),
-        date: new Date().toISOString(),
-        recipientCount: subscribers.length
-      })
-      setNewsletter({ subject: '', content: '' })
+        subject: savedNewsletter.title,
+        content: savedNewsletter.content,
+        id: savedNewsletter.id,
+        date: new Date(savedNewsletter.created).toISOString(),
+        recipientCount: subscribers.length,
+      });
+
+      // Reset form
+      setNewsletter({ subject: '', content: '' });
+    } catch (error) {
+      console.error('Error sending newsletter:', error);
     } finally {
-      setSending(false)
+      setSending(false);
     }
-  }
+  };
 
   return (
     <Card>
@@ -42,13 +71,17 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ onSend, subscribe
             <Input
               placeholder="Newsletter Subject"
               value={newsletter.subject}
-              onChange={(e) => setNewsletter({ ...newsletter, subject: e.target.value })}
+              onChange={(e) =>
+                setNewsletter((prev) => ({ ...prev, subject: e.target.value }))
+              }
               className="mb-2"
             />
             <textarea
               placeholder="Newsletter Content"
               value={newsletter.content}
-              onChange={(e) => setNewsletter({ ...newsletter, content: e.target.value })}
+              onChange={(e) =>
+                setNewsletter((prev) => ({ ...prev, content: e.target.value }))
+              }
               className="w-full min-h-[200px] p-2 border rounded-md"
             />
           </div>
@@ -56,8 +89,8 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ onSend, subscribe
             <div className="text-sm text-gray-500">
               Will be sent to {subscribers.length} subscribers
             </div>
-            <Button 
-              onClick={handleSend} 
+            <Button
+              onClick={handleSend}
               disabled={!newsletter.subject || !newsletter.content || sending}
             >
               {sending ? (
@@ -76,7 +109,7 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ onSend, subscribe
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default ComposeNewsletter
+export default ComposeNewsletter;

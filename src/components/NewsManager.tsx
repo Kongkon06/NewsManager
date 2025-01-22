@@ -16,19 +16,20 @@ const NewsletterManager = () => {
   const [activeTab, setActiveTab] = useState('subscribers')
 
   const fetchSubscriber = ()=>{
-    axios.get("http://localhost:3000/subscriber").then((response:any)=>{
+    axios.get("https://newsletter-api-xi.vercel.app/subscriber").then((response:any)=>{
       setSubscribers(response.data);
     });
   }
 
   const fetchNewsletter = async ()=>{
-    axios.get("http://localhost:3000/newletter").then((response:any)=>{
+    axios.get("https://newsletter-api-xi.vercel.app/newsletter").then((response:any)=>{
       setNewsletters(response.data);
     });
   }
   useEffect(()=>{
     try {
      fetchSubscriber();
+     fetchNewsletter();
     } catch (error) {
       console.error("Error fetching subscribers:", error);
     }
