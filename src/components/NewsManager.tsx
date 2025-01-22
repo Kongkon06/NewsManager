@@ -1,17 +1,38 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 //import { generateId, formatDate } from '../utils/utils'
 import SubscribersList from '../components/SubscriberList'
 import NewslettersList from '../components/NewsLetter'
 import ComposeNewsletter from '../components/Compose'
 import NewsletterInbox from '../components/Inbox'
+import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { allNewsLetterAtom, allSubscribersAtom } from '../Atoms/Atoms'
 
 const NewsletterManager = () => {
-  const [subscribers, setSubscribers] = useLocalStorage('subscribers', [])
-  const [newsletters, setNewsletters] = useLocalStorage('newsletters', [])
+  const [subscribers, setSubscribers] = useRecoilState(allSubscribersAtom)
+  const [newsletters, setNewsletters] = useRecoilState(allNewsLetterAtom)
   const [sentNewsletters, setSentNewsletters] = useLocalStorage('sentNewsletters', [])
   const [activeTab, setActiveTab] = useState('subscribers')
 
+  const fetchSubscriber = ()=>{
+    axios.get("http://localhost:3000/subscriber").then((response:any)=>{
+      setSubscribers(response.data);
+    });
+  }
+
+  const fetchNewsletter = async ()=>{
+    axios.get("http://localhost:3000/newletter").then((response:any)=>{
+      setNewsletters(response.data);
+    });
+  }
+  useEffect(()=>{
+    try {
+     fetchSubscriber();
+    } catch (error) {
+      console.error("Error fetching subscribers:", error);
+    }
+  },[])
   const handleDeleteSubscriber = (id: string) => {
     setSubscribers(subscribers.filter((sub: { id: string }) => sub.id !== id))
   }
