@@ -16,13 +16,13 @@ const NewsletterManager = () => {
   const [activeTab, setActiveTab] = useState('subscribers')
 
   const fetchSubscriber = () => {
-    axios.get("https://newsletter-api-xi.vercel.app/subscriber").then((response: any) => {
+    axios.get("https://newsletter-devplexity-api.vercel.app/subscriber").then((response: any) => {
       setSubscribers(response.data);
     });
   }
 
   const fetchNewsletter = async () => {
-    axios.get("https://newsletter-api-xi.vercel.app/newsletter").then((response: any) => {
+    axios.get("https://newsletter-devplexity-api.vercel.app/newsletter").then((response: any) => {
       setNewsletters(response.data);
     });
   }
@@ -34,19 +34,23 @@ const NewsletterManager = () => {
       console.error("Error fetching subscribers:", error);
     }
   }, [])
-  const handleDeleteSubscriber = (id: string) => {
+  const handleDeleteSubscriber = async (id: string) => {
+    
     setSubscribers(subscribers.filter((sub: { id: string }) => sub.id !== id))
   }
 
-  const handleDeleteNewsletter = (id: string) => {
+  const handleDeleteNewsletter = async (id: string) => {
+    await axios.get(`https://newsletter-devplexity-api.vercel.app/newsletter/${id}`);
+
     setNewsletters(newsletters.filter((news: { id: string }) => news.id !== id))
   }
 
   const handleSendtoAll = (id: string) => {
-    axios.post('https://newsletter-api-xi.vercel.app/emailhandler/sendNewsletter', {
+    axios.post('https://newsletter-devplexity-api.vercel.app/emailhandler/sendNewsletter', {
       newsletterId: id
     }).then((response: any) => {
       if (response.status == 200) {
+        console.log(response.data);
         alert("Newsletter send sucessfully to all subscriber");
       }
     })

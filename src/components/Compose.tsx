@@ -27,7 +27,7 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
     setSending(true);
     try {
       // API call to save newsletter to the backend
-      const response = await axios.post('https://newsletter-api-xi.vercel.app/newsletter/create', {
+      const response = await axios.post('https://newsletter-devplexity-api.vercel.app/newsletter/create', {
         title: newsletter.subject,
         content: newsletter.content,
       });
