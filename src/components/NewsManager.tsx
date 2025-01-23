@@ -12,7 +12,7 @@ import { allNewsLetterAtom, allSubscribersAtom } from '../Atoms/Atoms'
 const NewsletterManager = () => {
   const [subscribers, setSubscribers] = useRecoilState(allSubscribersAtom)
   const [newsletters, setNewsletters] = useRecoilState(allNewsLetterAtom)
-  const [sentNewsletters, setSentNewsletters] = useLocalStorage('sentNewsletters', [])
+  const sentNewsletters = useLocalStorage('sentNewsletters', [])
   const [activeTab, setActiveTab] = useState('subscribers')
 
   const fetchSubscriber = () => {
