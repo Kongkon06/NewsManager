@@ -63,6 +63,15 @@ const NewsletterManager = () => {
     })
   }
 
+  const handleSendtoAll = (id : string) => {
+    axios.post('https://newsletter-api-xi.vercel.app/emailhandler/sendNewsletter',{
+      newsletterId:id
+    }).then((response : any)=>{
+      if(response.status == 200){
+        alert("Newsletter send sucessfully to all subscriber");
+      }
+    })
+  }
   const tabs: { [key: string]: JSX.Element } = {
     subscribers: <SubscribersList subscribers={subscribers} onDelete={handleDeleteSubscriber} />,
     compose: (
@@ -71,7 +80,7 @@ const NewsletterManager = () => {
         <NewsletterInbox newsletters={sentNewsletters} />
       </div>
     ),
-    newsletters: <NewslettersList newsletters={newsletters} onDelete={handleDeleteNewsletter} />
+    newsletters: <NewslettersList onSend={handleSendtoAll} newsletters={newsletters} onDelete={handleDeleteNewsletter} />
   }
 
   return (
