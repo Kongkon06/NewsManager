@@ -9,20 +9,12 @@ interface Subscriber {
   email: string;
 }
 
-interface Newsletter {
-  subject: string;
-  content: string;
-  id: number;
-  date: string;
-  recipientCount: number;
-}
 
 interface ComposeNewsletterProps {
-  onSend: (newsletter: Newsletter) => Promise<void>;
   subscribers: Subscriber[];
 }
 
-const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ onSend, subscribers }) => {
+const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) => {
   const [newsletter, setNewsletter] = useState({
     subject: '',
     content: '',
@@ -40,16 +32,7 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ onSend, subscribe
         content: newsletter.content,
       });
 
-      const savedNewsletter = response.data;
-
       // Notify parent component about the new newsletter
-      await onSend({
-        subject: savedNewsletter.title,
-        content: savedNewsletter.content,
-        id: savedNewsletter.id,
-        date: new Date(savedNewsletter.created).toISOString(),
-        recipientCount: subscribers.length,
-      });
 
       // Reset form
       setNewsletter({ subject: '', content: '' });

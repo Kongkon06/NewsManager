@@ -35,7 +35,7 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
               </div>
               <div className='flex gap-6'>
                 <button className='p-2 text-white rounded-lg bg-green-500'
-                onClick={()=>{onSend(newsletter.id)}}>
+                onClick={()=>{onSend(newsletter.id); console.log(newsletter.id)}}>
                   Send
                 </button>
                 <Button

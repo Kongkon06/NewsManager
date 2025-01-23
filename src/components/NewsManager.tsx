@@ -15,25 +15,25 @@ const NewsletterManager = () => {
   const [sentNewsletters, setSentNewsletters] = useLocalStorage('sentNewsletters', [])
   const [activeTab, setActiveTab] = useState('subscribers')
 
-  const fetchSubscriber = ()=>{
-    axios.get("https://newsletter-api-xi.vercel.app/subscriber").then((response:any)=>{
+  const fetchSubscriber = () => {
+    axios.get("https://newsletter-api-xi.vercel.app/subscriber").then((response: any) => {
       setSubscribers(response.data);
     });
   }
 
-  const fetchNewsletter = async ()=>{
-    axios.get("https://newsletter-api-xi.vercel.app/newsletter").then((response:any)=>{
+  const fetchNewsletter = async () => {
+    axios.get("https://newsletter-api-xi.vercel.app/newsletter").then((response: any) => {
       setNewsletters(response.data);
     });
   }
-  useEffect(()=>{
+  useEffect(() => {
     try {
-     fetchSubscriber();
-     fetchNewsletter();
+      fetchSubscriber();
+      fetchNewsletter();
     } catch (error) {
       console.error("Error fetching subscribers:", error);
     }
-  },[])
+  }, [])
   const handleDeleteSubscriber = (id: string) => {
     setSubscribers(subscribers.filter((sub: { id: string }) => sub.id !== id))
   }
@@ -42,32 +42,11 @@ const NewsletterManager = () => {
     setNewsletters(newsletters.filter((news: { id: string }) => news.id !== id))
   }
 
-  const handleSendNewsletter = async (newsletter: { subject: string; content: string; id: number; date: string; recipientCount: number }) => {
-    // Simulate sending emails to subscribers
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        // In a real application, you would integrate with an email service here
-        console.log(`Sending newsletter to ${subscribers.length} subscribers:`, newsletter)
-        
-        // Add to sent newsletters
-        setSentNewsletters([
-          {
-            ...newsletter,
-            sentAt: new Date().toISOString(),
-          },
-          ...sentNewsletters
-        ])
-        
-        resolve()
-      }, 2000) // Simulate network delay
-    })
-  }
-
-  const handleSendtoAll = (id : string) => {
-    axios.post('https://newsletter-api-xi.vercel.app/emailhandler/sendNewsletter',{
-      newsletterId:id
-    }).then((response : any)=>{
-      if(response.status == 200){
+  const handleSendtoAll = (id: string) => {
+    axios.post('https://newsletter-api-xi.vercel.app/emailhandler/sendNewsletter', {
+      newsletterId: id
+    }).then((response: any) => {
+      if (response.status == 200) {
         alert("Newsletter send sucessfully to all subscriber");
       }
     })
@@ -76,7 +55,7 @@ const NewsletterManager = () => {
     subscribers: <SubscribersList subscribers={subscribers} onDelete={handleDeleteSubscriber} />,
     compose: (
       <div className="space-y-6">
-        <ComposeNewsletter onSend={handleSendNewsletter} subscribers={subscribers} />
+        <ComposeNewsletter subscribers={subscribers} />
         <NewsletterInbox newsletters={sentNewsletters} />
       </div>
     ),
@@ -90,11 +69,10 @@ const NewsletterManager = () => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-lg capitalize ${
-              activeTab === tab
+            className={`px-4 py-2 rounded-lg capitalize ${activeTab === tab
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-secondary hover:bg-secondary/80'
-            }`}
+              }`}
           >
             {tab}
           </button>
