@@ -20,7 +20,9 @@ interface NewslettersListProps {
 const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete, onSend }) => {
   const { toast } = useToast()
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status?: string | null) => {
+    if (!status) return null;
+    
     switch (status.toLowerCase()) {
       case 'sent':
         return <CheckCircle2 className="h-4 w-4 text-green-500" />
