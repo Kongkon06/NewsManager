@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
-import { Trash2, Send } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 
 interface Newsletter {
   id: string;
@@ -39,7 +39,6 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
               <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
                 <button className='p-2 gap-1 text-white rounded-lg bg-green-500'
                 onClick={()=>{onSend(newsletter.id); console.log(newsletter.id)}}>
-                  <Send className="h-4 w-4" />
                   Send
                 </button>
                 <Button
