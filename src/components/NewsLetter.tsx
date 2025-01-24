@@ -17,42 +17,25 @@ interface NewslettersListProps {
 }
 
 const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete , onSend }) => {
-  if (newsletters.length === 0) {
-    return <p className="text-center py-12 text-muted-foreground">No newsletters available</p>
-  }
-  const handleSend = (id: string) => {
-    try {
-      // Add optional confirmation
-      if (window.confirm(`Are you sure you want to send newsletter ${id}?`)) {
-        onSend(id);
-      }
-    } catch (error) {
-      // Add error handling
-      console.error('Newsletter sending failed', error);
-    }
-  }
   return (
-    <Card className="card-gradient border-none shadow-xl" >
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold tracking-tight">Newsletters</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Manage and track your newsletter campaigns
-        </p>
+    <Card >
+      <CardHeader>
+        <CardTitle>Newsletters</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {newsletters.map((newsletter) => (
-            <div key={newsletter.id} className="group relative flex justify-between items-center p-6 rounded-xl bg-background/50 backdrop-blur-sm border border-border/50 transition-all duration-200 hover:shadow-md hover:bg-background/80 animate-fade-in">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2"><h3 className="font-semibold text-lg tracking-tight">{newsletter.title}</h3></div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground text-gray-500">
-                  Status: <span className="capitalize  px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">{newsletter.status}</span> | 
+            <div key={newsletter.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+              <div>
+                <div className="font-medium">{newsletter.title}</div>
+                <div className="text-sm text-gray-500">
+                  Status: <span className="capitalize">{newsletter.status}</span> | 
                   Created: {newsletter.created}
                 </div>
               </div>
-              <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
-                <button className='p-2 gap-1 text-white rounded-lg bg-green-500'
-                onClick={()=>{handleSend(newsletter.id); console.log(newsletter.id)}}>
+              <div className='flex gap-6'>
+                <button className='p-2 text-white rounded-lg bg-green-500'
+                onClick={()=>{onSend(newsletter.id); console.log(newsletter.id)}}>
                   Send
                 </button>
                 <Button
