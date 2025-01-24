@@ -20,6 +20,17 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
   if (newsletters.length === 0) {
     return <p className="text-center py-12 text-muted-foreground">No newsletters available</p>
   }
+  const handleSend = (id: string) => {
+    try {
+      // Add optional confirmation
+      if (window.confirm(`Are you sure you want to send newsletter ${id}?`)) {
+        onSend(id);
+      }
+    } catch (error) {
+      // Add error handling
+      console.error('Newsletter sending failed', error);
+    }
+  }
   return (
     <Card className="card-gradient border-none shadow-xl" >
       <CardHeader className="space-y-1">
@@ -41,7 +52,7 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
               </div>
               <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity'>
                 <button className='p-2 gap-1 text-white rounded-lg bg-green-500'
-                onClick={()=>{onSend(newsletter.id); console.log(newsletter.id)}}>
+                onClick={()=>{handleSend(newsletter.id); console.log(newsletter.id)}}>
                   Send
                 </button>
                 <Button
