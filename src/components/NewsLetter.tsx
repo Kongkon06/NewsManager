@@ -17,6 +17,9 @@ interface NewslettersListProps {
 }
 
 const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete , onSend }) => {
+  if (newsletters.length === 0) {
+    return <p className="text-center py-12 text-muted-foreground">No newsletters available</p>
+  }
   return (
     <Card className="card-gradient border-none shadow-xl" >
       <CardHeader className="space-y-1">
@@ -51,11 +54,6 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
               </div>
             </div>
           ))}
-           {newsletters.length === 0 && (
-            <div className="text-center py-12 text-muted-foreground">
-              <p>No newsletters found</p>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>
