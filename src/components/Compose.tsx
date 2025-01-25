@@ -8,7 +8,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import 'react-tabs/style/react-tabs.css';
-import { useToast } from "@/hooks/use-toast"
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Subscriber {
   email: string;
@@ -19,7 +19,6 @@ interface ComposeNewsletterProps {
 }
 
 const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) => {
-  const { toast } = useToast();
   const [newsletter, setNewsletter] = useState({
     subject: '',
     content: '',
@@ -41,18 +40,10 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
         content: finalContent,
       });
 
-      toast({
-        title: "Newsletter sent successfully",
-        description: "Your newsletter has been sent to all subscribers.",
-      });
-
+      toast.success("Newsletter sent successfully!");
       setNewsletter({ subject: '', content: '', useHtml: false });
     } catch (error) {
-      toast({
-        title: "Error sending newsletter",
-        description: "There was a problem sending your newsletter. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("Error sending newsletter. Please try again.");
       console.error('Error sending newsletter:', error);
     } finally {
       setSending(false);
@@ -157,6 +148,10 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
           </div>
         </div>
       </CardContent>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </Card>
   );
 };

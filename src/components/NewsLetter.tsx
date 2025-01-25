@@ -1,7 +1,8 @@
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Button } from './ui/button'
-import { Trash2 } from 'lucide-react'
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface Newsletter {
   id: string;
@@ -16,9 +17,19 @@ interface NewslettersListProps {
   onSend: (id: string) => void;
 }
 
-const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete , onSend }) => {
+const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete, onSend }) => {
+  const handleSend = (id: string) => {
+    onSend(id);
+    toast.success('Newsletter sent successfully!');
+  };
+
+  const handleDelete = (id: string) => {
+    onDelete(id);
+    toast.success('Newsletter deleted successfully!');
+  };
+
   return (
-    <Card >
+    <Card>
       <CardHeader>
         <CardTitle>Newsletters</CardTitle>
       </CardHeader>
@@ -33,25 +44,27 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
                   Created: {newsletter.created}
                 </div>
               </div>
-              <div className='flex gap-6'>
-                <button className='p-2 text-white rounded-lg bg-green-500'
-                onClick={()=>{onSend(newsletter.id); console.log(newsletter.id)}}>
+              <div className="flex gap-6">
+                <button
+                  className="p-2 text-white rounded-lg bg-green-500 hover:bg-green-600"
+                  onClick={() => handleSend(newsletter.id)}
+                >
                   Send
                 </button>
                 <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onDelete(newsletter.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleDelete(newsletter.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           ))}
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default NewslettersList
+export default NewslettersList;
