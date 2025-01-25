@@ -8,7 +8,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import 'react-tabs/style/react-tabs.css';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 interface Subscriber {
   email: string;
@@ -52,10 +52,6 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
   
   return (
     <>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        />
     <Card className="w-full shadow-lg border-0 bg-gradient-to-b from-white to-gray-50/50">
       <CardHeader className="space-y-1 pb-8 border-b">
         <div className="flex items-center justify-between">

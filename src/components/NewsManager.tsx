@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil'
 import { allNewsLetterAtom, allSubscribersAtom } from '../Atoms/Atoms'
 import { Mail, Users, PenSquare } from 'lucide-react'
 import { useToast } from "@/hooks/use-toast"
-
+import { Toaster } from 'react-hot-toast'
 const NewsletterManager = () => {
   const [subscribers, setSubscribers] = useRecoilState(allSubscribersAtom)
   const [newsletters, setNewsletters] = useRecoilState(allNewsLetterAtom)
@@ -95,6 +95,7 @@ const NewsletterManager = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 p-6">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full max-w-5xl mx-auto space-y-6">
         <div className="text-center space-y-2 mb-8 animate-fade-in">
           <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-purple-400">
