@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Trash2 } from 'lucide-react';
-import toast from 'react-hot-toast';
+import toast, {Toaster} from 'react-hot-toast';
 
 interface Newsletter {
   id: string;
@@ -34,6 +34,10 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
         <CardTitle>Newsletters</CardTitle>
       </CardHeader>
       <CardContent>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
         <div className="space-y-4">
           {newsletters.map((newsletter) => (
             <div key={newsletter.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">

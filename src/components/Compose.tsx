@@ -25,21 +25,21 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
     useHtml: false,
   });
   const [sending, setSending] = useState(false);
-
+  
   const handleSend = async () => {
     if (!newsletter.subject || !newsletter.content) return;
-
+    
     setSending(true);
     try {
       const finalContent = newsletter.useHtml
-        ? newsletter.content
-        : `${newsletter.content}\n\nBest regards,\nDeveplexity Pvt Ltd`;
-
+      ? newsletter.content
+      : `${newsletter.content}\n\nBest regards,\nDeveplexity Pvt Ltd`;
+      
       await axios.post('https://newsletter-devplexity-api.vercel.app/newsletter/create', {
         title: newsletter.subject,
         content: finalContent,
       });
-
+      
       toast.success("Newsletter sent successfully!");
       setNewsletter({ subject: '', content: '', useHtml: false });
     } catch (error) {
@@ -49,8 +49,13 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
       setSending(false);
     }
   };
-
+  
   return (
+    <>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        />
     <Card className="w-full shadow-lg border-0 bg-gradient-to-b from-white to-gray-50/50">
       <CardHeader className="space-y-1 pb-8 border-b">
         <div className="flex items-center justify-between">
@@ -72,7 +77,7 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
                 setNewsletter((prev) => ({ ...prev, subject: e.target.value }))
               }
               className="pl-10 h-12 text-lg border-gray-200 focus:border-purple-400 focus:ring-purple-400"
-            />
+              />
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           </div>
 
@@ -99,7 +104,7 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
                   setNewsletter((prev) => ({ ...prev, content: e.target.value }))
                 }
                 className="w-full min-h-[400px] p-4 border rounded-lg focus:border-purple-400 focus:ring-purple-400 resize-none"
-              />
+                />
             </TabsContent>
             <TabsContent value="html" className="mt-4">
               <div className="rounded-lg overflow-hidden border">
@@ -120,10 +125,10 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
                 className="p-6 border rounded-lg bg-white min-h-[400px] prose max-w-none"
                 dangerouslySetInnerHTML={{
                   __html: newsletter.useHtml
-                    ? newsletter.content
-                    : `${newsletter.content.replace(/\n/g, '<br>')}<br><br>Best regards,<br>Deveplexity Pvt Ltd`,
+                  ? newsletter.content
+                  : `${newsletter.content.replace(/\n/g, '<br>')}<br><br>Best regards,<br>Deveplexity Pvt Ltd`,
                 }}
-              />
+                />
             </TabsContent>
           </Tabs>
 
@@ -148,11 +153,8 @@ const ComposeNewsletter: React.FC<ComposeNewsletterProps> = ({ subscribers }) =>
           </div>
         </div>
       </CardContent>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
     </Card>
+  </>
   );
 };
 
