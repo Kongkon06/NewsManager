@@ -13,29 +13,19 @@ interface Newsletter {
 
 interface NewslettersListProps {
   newsletters: Newsletter[];
-  onDelete: (id: string) => Promise<void>; // Marked as async
-  onSend: (id: string) => Promise<void>; // Marked as async
+  onDelete: (id: string) => void;
+  onSend: (id: string) => void;
 }
 
 const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete, onSend }) => {
-  const handleSend = async (id: string) => {
-    try {
-      await onSend(id); // Await the async function
-      toast.success('Newsletter sent successfully!');
-    } catch (error) {
-      toast.error('Failed to send newsletter.');
-      console.error('Error sending newsletter:', error);
-    }
+  const handleSend = (id: string) => {
+    onSend(id);
+    toast.success('Newsletter sent successfully!');
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await onDelete(id); // Await the async function
-      toast.success('Newsletter deleted successfully!');
-    } catch (error) {
-      toast.error('Failed to delete newsletter.');
-      console.error('Error deleting newsletter:', error);
-    }
+  const handleDelete = (id: string) => {
+    onDelete(id);
+    toast.success('Newsletter deleted successfully!');
   };
 
   return (
