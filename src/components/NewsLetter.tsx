@@ -45,7 +45,7 @@ const NewslettersList: React.FC<NewslettersListProps> = ({ newsletters, onDelete
           {newsletters.map((newsletter) => (
             <div key={newsletter.id} className=" group relative flex justify-between items-center p-6 rounded-lg bg-background/50 backdrop-blur-sm border border-border/60 transition-all duration-200 hover:shadow-md hover:bg-gray-50 animate-fade-in">
               <div  className="space-y-1">
-                <div className="flex items-center gap-2"><h3 className="font-semibold text-lg tracking-tight">{newsletter.title}</h3></div>
+                <div className="flex items-center gap-2"><h3 className="font-semibold text-base tracking-tight">{newsletter.title}</h3></div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground text-gray-500">
                   Status: <span className="capitalize px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">{newsletter.status}</span> | 
                   Created: {newsletter.created}
